@@ -19,7 +19,7 @@ router.get('/', auth, async (req, res) => {
       role,
       school: user.school,
       programme: user.programme,
-    })
+    }).select('-password')
 
     return res.send(allColleagues)
   } catch ({ message }) {
@@ -34,7 +34,7 @@ router.get('/', auth, async (req, res) => {
  */
 router.get('/:id', auth, async (req, res) => {
   try {
-    const colleague = await User.findById(req.params.id)
+    const colleague = await User.findById(req.params.id).select('-password')
     if (!colleague) return res.status(404).send({ message: 'Colleague not found' })
 
     return res.send(colleague)

@@ -136,7 +136,7 @@ router.post(
  */
 router.delete('/', auth, async (req, res) => {
   try {
-    const userToDelete = await User.findById(req.userID)
+    const userToDelete = await User.findById(req.userID).select('-password')
     if (!userToDelete) return res.status(404).send({ message: 'User not found' })
 
     // remove user's projects, questions, comments
