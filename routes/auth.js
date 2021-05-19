@@ -5,6 +5,9 @@ const bcrypt = require('bcryptjs')
 const { getKey } = require('../utils/get-key')
 const auth = require('../middleware/auth')
 const User = require('../models/User')
+const Question = require('../models/Question')
+const Project = require('../models/Project')
+const Comment = require('../models/Comment')
 
 /**
  * @description refresh token
@@ -137,6 +140,9 @@ router.delete('/', auth, async (req, res) => {
     if (!userToDelete) return res.status(404).send({ message: 'User not found' })
 
     // remove user's projects, questions, comments
+    await Project.remove({ userId: userToDelete._id })
+    await Question.remove({ userId: userToDelete._id })
+    await Comment.remove({ userId: userToDelete._id })
     await userToDelete.remove()
 
     return res.send({ message: 'User profile deleted' })
