@@ -18,6 +18,10 @@ const projectSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    programme: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,

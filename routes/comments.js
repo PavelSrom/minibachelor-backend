@@ -5,11 +5,6 @@ const User = require('../models/User')
 const Comment = require('../models/Comment')
 
 /**
- * please note that we use the same routes for both questions and projects
- * the Comment entity has questionId or projectId, take care of that
- */
-
-/**
  * @description get all comments for question or project
  * @access private
  */

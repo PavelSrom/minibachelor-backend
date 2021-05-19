@@ -12,7 +12,18 @@ const Comment = require('../models/Comment')
 router.get('/', auth, async (req, res) => {
   const { user, school, programme, sortBy } = req.query
 
+  const filter = {}
+  const sort = {}
+
+  if (user) filter.userId = user
+  if (school) filter.school = school
+  if (programme) filter.programme = programme
+  if (sortBy) sort.createdAt = sortBy === 'newest' ? -1 : 1
+
   try {
+    const allQuestions = await Question.find(filter).sort(sort)
+
+    return res.send(allQuestions)
   } catch ({ message }) {
     console.log(message)
     return res.status(500).send({ message })
@@ -70,6 +81,8 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const questionToDelete = await Question.findById(req.params.id)
     if (!questionToDelete) return res.status(404).send({ message: 'Question not found' })
+    if (questionToDelete.userId !== req.userID)
+      return res.status(403).send({ message: 'Access denied' })
 
     // remove all comments for that question as well
     await Comment.remove({ entityId: questionToDelete._id })
