@@ -8,7 +8,7 @@ const Comment = require('../models/Comment')
  * @description get all comments for question or project
  * @access private
  */
-router.get('/:entityId/comments', auth, async (req, res) => {
+router.get('/:entityId', auth, async (req, res) => {
   try {
     const allComments = await Comment.find({ entityId: req.params.entityId }).sort({
       createdAt: -1,
@@ -26,7 +26,7 @@ router.get('/:entityId/comments', auth, async (req, res) => {
  * @access private
  */
 router.post(
-  '/:entityId/comments',
+  '/:entityId',
   [auth, check('text', 'Text is required').not().isEmpty()],
   async (req, res) => {
     const errors = validationResult(req)
@@ -46,6 +46,7 @@ router.post(
         userSurname: user.surname,
         text,
       })
+      await newComment.save()
 
       return res.status(201).send(newComment)
     } catch ({ message }) {

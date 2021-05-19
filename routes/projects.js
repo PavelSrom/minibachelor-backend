@@ -23,7 +23,7 @@ router.get('/', auth, async (req, res) => {
   if (user) filter.userId = user
   if (school) filter.school = school
   if (programme) filter.programme = programme
-  if (sortBy) sort.createdAt = sortBy === 'newest' ? -1 : 1
+  if (sortBy) sort.createdAt = sortBy === 'newest' ? 1 : -1
 
   try {
     const allProjects = await Project.find(filter).sort(sort)
@@ -88,7 +88,7 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     const projectToDelete = await Project.findById(req.params.id)
     if (!projectToDelete) return res.status(404).send({ message: 'Project not found' })
-    if (projectToDelete.userId !== req.userID)
+    if (projectToDelete.userId.toString() !== req.userID)
       return res.status(403).send({ message: 'Access denied' })
 
     // remove all comments for that project as well

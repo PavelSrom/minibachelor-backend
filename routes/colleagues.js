@@ -9,7 +9,8 @@ const User = require('../models/User')
  */
 router.get('/', auth, async (req, res) => {
   const { role } = req.query
-  if (!role) return res.status(400).send({ message: 'Bad request' })
+  if (!role)
+    return res.status(400).send({ message: `Bad request - missing query param 'role'` })
 
   try {
     const user = await User.findById(req.userID)
