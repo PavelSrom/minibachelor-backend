@@ -6,7 +6,7 @@ module.exports = async (req, res, next) => {
   if (!token) return res.status(401).send({ message: 'Missing token' })
 
   try {
-    const decoded = jwt.verify(token, getkey('jwtSecret'))
+    const decoded = jwt.verify(token, getKey('jwtSecret'))
     req.userID = decoded.id
 
     next()
