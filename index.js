@@ -1,11 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const helmet = require('helmet')
 const cors = require('cors')
 const { getKey } = require('./utils/get-key')
 
 const app = express()
 
 app.use(express.json())
+app.use(helmet())
 app.use(cors())
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/questions', require('./routes/questions'))
